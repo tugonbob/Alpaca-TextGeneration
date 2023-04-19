@@ -3,7 +3,7 @@ import string
 
 class ContextGenerator:
     def __init__(self):
-        self.data_path = '/Users/joshuagao/SVS/Alpaca-TextGeneration/data.csv'
+        self.data_path = 'data.csv'
         self.data = self._parse_data()
 
     def _parse_data(self):
@@ -40,11 +40,11 @@ class ContextGenerator:
         likelihoods = self._calculate_likelihoods(sentence)
 
         context = ""
-        for data in likelihoods[:16]:
+        for data in likelihoods[:1]:
             context += f"Doctor: {data['doctor']} Tiffany: {data['patient']}\n"
         context += "\nQ: Respond to the following questions as if you are Tiffany and ensure the response is consistent with the given Context. If you are unsure of the answer, please ask the instructor for clarification. "
         context += sentence + "\n\nA:"
-        print(context)
+        # print(context)
         return context
 
 

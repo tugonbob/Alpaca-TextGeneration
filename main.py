@@ -1,5 +1,6 @@
 from Tiffany import Tiffany
-import sys
+import torch
 
+torch.cuda.empty_cache()
 tiffany = Tiffany()
 tiffany.start_chat()

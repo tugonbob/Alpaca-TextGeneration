@@ -1,6 +1,5 @@
 from context_generator import ContextGenerator
 from alpaca import Alpaca
-import openai
 import sys
 
 
@@ -14,7 +13,8 @@ class Tiffany:
             return f.read()
 
     def __call__(self, sentence):
-        return self.alpaca.evaluate(sentence)
+        prompt = self.context_generator.generate_context(sentence)
+        return self.alpaca.evaluate(prompt)
 
     def chat(self, sentence):
         self(sentence)

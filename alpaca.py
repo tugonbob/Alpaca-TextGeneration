@@ -15,9 +15,8 @@ class Alpaca:
             temperature=0.1,
             top_p=0.75,
             num_beams=4,)
-
-    def evaluate(self, instruction):
-        prompt = self.generate_prompt(instruction)
+        
+    def evaluate(self, prompt):
         inputs = self.tokenizer(prompt, return_tensors="pt")
         input_ids = inputs["input_ids"].cuda()
         generation_output = self.model.generate(
@@ -25,8 +24,8 @@ class Alpaca:
             generation_config=self.generation_config,
             return_dict_in_generate=True,
             output_scores=True,
-            max_new_tokens=4097
+            max_new_tokens=256
         )
         for s in generation_output.sequences:
             output = self.tokenizer.decode(s)
-            print("Response:", output.split("### A:")[1].strip())
+            return output

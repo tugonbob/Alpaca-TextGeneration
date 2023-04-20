@@ -1,6 +1,7 @@
 from context_generator import ContextGenerator
 from alpaca import Alpaca
 import sys
+import os
 
 
 class Tiffany:
@@ -22,7 +23,7 @@ class Tiffany:
     def start_chat(self):
         exit_code = False
         while not exit_code:
-            sentence = input(f"Ask Tiffany: ")
+            sentence = input(f"\n\n\n\n\nAsk Tiffany: ")
             if sentence == "exit":
                 exit_code = True
                 sys.exit()

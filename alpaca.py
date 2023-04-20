@@ -28,4 +28,5 @@ class Alpaca:
         )
         for s in generation_output.sequences:
             output = self.tokenizer.decode(s)
+            output = output.split("A: ")[1]
             return output

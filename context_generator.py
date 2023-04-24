@@ -40,7 +40,8 @@ class ContextGenerator:
             common_words = sentence_set.intersection(intent['word_set'])
             common_stop_words = sentence_set.intersection(self.stopwords_set)
             # add 1 point for common words. Then, subtract 0.5 likelihood points for each common stop word
-            intent['likelihood'] = len(common_words) - (len(common_stop_words) / 2)
+            intent['likelihood'] = len(
+                common_words) - (len(common_stop_words) / 2)
             likelihood.append(intent)
 
         likelihood = sorted(
@@ -50,7 +51,7 @@ class ContextGenerator:
     def generate_context(self, sentence):
         likelihoods = self._calculate_likelihoods(sentence)
         context = "Context: \n"
-        for data in likelihoods[:5]:
+        for data in likelihoods[:50]:
             context += f"Doctor: {data['doctor'][0]} Tiffany: {data['patient'][0]}\n"
         context += "\nInstructions: Respond to the following question as if you are Tiffany and ensure the response is consistent with the given Context. If you are unsure of the answer, please ask the instructor for clarification.\n\n"
         context += "Q: " + sentence + "\n\nA:"

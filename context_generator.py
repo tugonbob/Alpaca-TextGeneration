@@ -1,6 +1,5 @@
 import string
 
-
 class ContextGenerator:
     def __init__(self):
         self.data_path = 'data.csv'
@@ -40,8 +39,7 @@ class ContextGenerator:
             common_words = sentence_set.intersection(intent['word_set'])
             common_stop_words = sentence_set.intersection(self.stopwords_set)
             # add 1 point for common words. Then, subtract 0.5 likelihood points for each common stop word
-            intent['likelihood'] = len(
-                common_words) - (len(common_stop_words) / 2)
+            intent['likelihood'] = len(common_words) - (len(common_stop_words) / 2)
             likelihood.append(intent)
 
         likelihood = sorted(
@@ -51,17 +49,8 @@ class ContextGenerator:
     def generate_context(self, sentence):
         likelihoods = self._calculate_likelihoods(sentence)
         context = "Context: \n"
-        for data in likelihoods[:50]:
+        for data in likelihoods[:5]:
             context += f"Doctor: {data['doctor'][0]} Tiffany: {data['patient'][0]}\n"
-        context += "\nInstructions: Respond to the following question as if you are Tiffany and ensure the response is consistent with the given Context. If you are unsure of the answer, please ask the instructor for clarification.\n\n"
+        context += "\nInstructions: Respond to the following question as if you are Tiffany and ensure the response is consistent with the given Context.\n\n"
         context += "Q: " + sentence + "\n\nA:"
-        print(context)
         return context
-
-
-if __name__ == "__main__":
-    import pprint as pp
-
-    cg = ContextGenerator()
-    # cg._calculate_likelihoods("Hello how are you doing today. Is there anything I can do for you?")
-    # pp.pprint(cg._calculate_likelihoods("When did this first start happening")[:1])

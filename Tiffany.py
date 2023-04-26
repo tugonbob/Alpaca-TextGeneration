@@ -1,7 +1,7 @@
 from context_generator import ContextGenerator
 from alpaca import Alpaca
 import sys
-import os
+import time
 
 
 class Tiffany:
@@ -10,7 +10,7 @@ class Tiffany:
         self.alpaca = Alpaca()
 
     def _txt_file_to_string(self, path):
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             return f.read()
 
     def __call__(self, sentence):
@@ -18,7 +18,7 @@ class Tiffany:
         return self.alpaca.evaluate(prompt)
 
     def chat(self, sentence):
-        self(sentence)
+        return self(sentence)
 
     def start_chat(self):
         exit_code = False
@@ -28,9 +28,7 @@ class Tiffany:
                 exit_code = True
                 sys.exit()
             else:
-                print(f"Tiffany: ", self(sentence))
-
-
-if __name__ == "__main__":
-    tiffany = Tiffany()
-    tiffany.start_chat()
+                start = time.time()
+                print(f"Tiffany:", self(sentence))
+                end = time.time()
+                print(f"Time elapsed: {end-start}")

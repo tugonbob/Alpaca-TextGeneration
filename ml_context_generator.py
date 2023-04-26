@@ -5,7 +5,7 @@ import openai
 import time
 
 
-class MLContextGenerator():
+class MLContextGenerator:
     def __init__(self, data_path, nearest=100):
         self.data_path = data_path
         self.nearest = nearest
@@ -13,21 +13,21 @@ class MLContextGenerator():
         self.model = "gpt-3.5-turbo"
 
     def _get_embedding(self, sentence):
-        model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+        model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
         embedding = model.encode(sentence)
         return embedding
 
     def _sentence_search(self, sentence):
-
         # get embedding for sentence
         embedding = self._get_embedding(sentence)
         # get nearest neighbors
-        nearest_neighbors = self.df['embeddings'].apply(
-            lambda x: self._cosine_similarity(x, embedding))
+        nearest_neighbors = self.df["embeddings"].apply(
+            lambda x: self._cosine_similarity(x, embedding)
+        )
         # sort nearest neighbors
         nearest_neighbors = nearest_neighbors.sort_values(ascending=False)
         # get top nearest neighbors
-        nearest_neighbors = nearest_neighbors.iloc[:self.nearest]
+        nearest_neighbors = nearest_neighbors.iloc[: self.nearest]
         # get index of nearest neighbors
         nearest_neighbors_index = nearest_neighbors.index
         # get sentences from nearest neighbors
@@ -41,7 +41,7 @@ class MLContextGenerator():
         return self._list_2_str(nearest_neighbors_list)
 
     def _cosine_similarity(self, x, y):
-        return np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
+        return np.dot(x, y) / (np.linalg.norm(x) * np.linalg.norm(y))
 
     def _list_2_str(self, list):
         return " ".join(list)
@@ -49,7 +49,7 @@ class MLContextGenerator():
     def generate_context(self, sentence):
         print("sentence searching")
         search = self._sentence_search(sentence)
-        print('summarizing')
+        print("summarizing")
         summary = self.summarize(search)
         return summary
 
@@ -58,13 +58,13 @@ class MLContextGenerator():
         task = "summarize the following memory in second person past tense"
         system_context = f"You are a helpful assistant that will {task}. Start the resonse with I remember"
 
-        openai.api_key = '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'
+        openai.api_key = "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"
         response = openai.ChatCompletion.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": system_context},
-                {"role": "user", "content": sentence}
-            ]
+                {"role": "user", "content": sentence},
+            ],
         )
 
         gpt_response = response["choices"][0]["message"]["content"]
